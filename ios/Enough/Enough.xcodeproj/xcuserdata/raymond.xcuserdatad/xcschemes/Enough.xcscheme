@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D70A4021984BD76001A6ACB"
+               BlueprintIdentifier = "4D70A5181984CF4F001A6ACB"
                BuildableName = "Enough.app"
                BlueprintName = "Enough"
                ReferencedContainer = "container:Enough.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D70A42E1984BD77001A6ACB"
+               BlueprintIdentifier = "4D70A53C1984CF4F001A6ACB"
                BuildableName = "EnoughTests.xctest"
                BlueprintName = "EnoughTests"
                ReferencedContainer = "container:Enough.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D70A4021984BD76001A6ACB"
+            BlueprintIdentifier = "4D70A5181984CF4F001A6ACB"
             BuildableName = "Enough.app"
             BlueprintName = "Enough"
             ReferencedContainer = "container:Enough.xcodeproj">
@@ -61,7 +61,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D70A4021984BD76001A6ACB"
+            BlueprintIdentifier = "4D70A5181984CF4F001A6ACB"
             BuildableName = "Enough.app"
             BlueprintName = "Enough"
             ReferencedContainer = "container:Enough.xcodeproj">
@@ -79,7 +79,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D70A4021984BD76001A6ACB"
+            BlueprintIdentifier = "4D70A5181984CF4F001A6ACB"
             BuildableName = "Enough.app"
             BlueprintName = "Enough"
             ReferencedContainer = "container:Enough.xcodeproj">
