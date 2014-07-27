@@ -68,6 +68,16 @@
 
 
 - (IBAction)sendPost:(id)sender {
+    NSString* postID = _sendPostField.text;
+    NSMutableDictionary *dataDict = [[NSMutableDictionary alloc]
+                                     initWithObjects:@[@"", @""]
+                                     forKeys:@[@"phoneNumber", @"postID"]];
+    NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"ENOUGH_PHONE_NUMBER"];
+    [dataDict setObject:savedValue forKey:@"phoneNumber"];
+    [dataDict setObject:postID forKey:@"postID"];
+    [self postRequest:@"http://localhost:2468/sendmsg" data:dataDict];
+    _sendPostField.text = @"";
 }
 
 - (void)postRequest:(NSString *)url data:(NSMutableDictionary *)inputData {

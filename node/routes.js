@@ -4,27 +4,51 @@ exports.layout = function(req,res){
 	res.send('home page');
 }
 
-exports.addNewNum = function(req,res){
-	res.send('add number');
+var mailer = function(user_obj){ 
+  // if(user_obj)
+  if (user_obj['member'] != 'Myself') {
+    if (user_obj['number'] != ''){
+      console.log(user_obj['number']);
+      console.log("SEND TWILIO");
+    }
+    else if (user_obj['email'] != '') {
+      console.log(user_obj['email']);
+      console.log("SEND MAILJET");
+    }
+  }
 }
 
 exports.sendmsg = function(req,res){
-	res.render('sendmsg', {
-		title: 'sendmsg'
-	});
+  db_url = db_methods.getDBUrl();
+  db_root = db_methods.establishConnection(db_url);
+  numbers = [];
+  var ph = req.body['phoneNumber'];
+  var post = req.body['postID'];
+  var userRef = db_root.child("users").child(ph);
+  userRef.on('value', function (snapshot) {
+    for (var key in snapshot.val()) {
+      mailer(snapshot.val()[key]);
+    }
+  }, function (errorObject) {
+    console.log('The read failed: ' + errorObject.code);
+  });
+	res.send('/ POST OK');
 }
 
 exports.insert = function(req, res){
-	console.log('ins');
-
 	db_url = db_methods.getDBUrl();
 	db_root = db_methods.establishConnection(db_url);
   console.log(req.body);
 	var userRef = db_root.child("users").child(req.body['pilotPhoneNumber']);
   var newNumber = (req.body['mobileNumber']).replace('(','').replace(')','').replace('-','').replace(/\s/g, "");
+  var email = '';
+  if (req.body['homeEmail'].length != 0){
+    var email = req.body['homeEmail']
+  }
 	userRef.push({
   	member: req.body['firstName'] + ' ' + req.body['lastName'],
-  	number: newNumber
+  	number: newNumber,
+    email: email
 	});
 
   res.send('/ POST OK');
