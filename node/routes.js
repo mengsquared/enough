@@ -27,3 +27,12 @@ exports.insert = function(req, res){
 
   res.send('/ POST OK');
 }
+
+exports.testpost = function(req, res){
+  console.log(req.body);
+  res.send('/ POST OK');
+}
+exports.testget = function(req, res){
+  console.log(req.query);
+  res.send('/ GET OK');
+}

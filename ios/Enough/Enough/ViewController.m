@@ -7,14 +7,17 @@
 //
 
 #import "ViewController.h"
-#import <Firebase/Firebase.h>
 
 @interface ViewController ()
 
 @property (nonatomic, strong) NSMutableArray *arrContactsData;
+@property (nonatomic, strong) NSMutableArray *addedNumbers;
 @property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
 
 -(void)showAddressBook;
+-(void)populateNumbers;
+-(void)postRequest:(NSString *)url data:(NSMutableDictionary *)data;
+-(NSDictionary *)getRequest:(NSString *)url;
 
 @end
 
@@ -24,9 +27,20 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSLog(@"Start");
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [self.view addGestureRecognizer:singleTap];
+    [self populateNumbers];
+    UIColor *color = [UIColor colorWithRed:(243/255.0) green:(123/255.0) blue:(48/255.0) alpha:1];
+    NSString * placeholderText = @"Your Phone Number";
+    _ownPhoneField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholderText attributes:@{NSForegroundColorAttributeName: color}];
+    placeholderText = @"Post Key";
+    _sendPostField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholderText attributes:@{NSForegroundColorAttributeName: color}];
 }
-
+-(void)handleSingleTap:(UITapGestureRecognizer *)sender{
+    [_ownPhoneField resignFirstResponder];
+    [_sendPostField resignFirstResponder];
+    puts("Dismissed the keyboard");
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -34,16 +48,90 @@
 }
 
 - (IBAction)addContact:(id)sender {
-    int addedNumbers;
-    addedNumbers = 1 + 2;
-    NSLog(@"The Sum of 1 + 2 is %d",addedNumbers);
     [self showAddressBook];
+    [self postRequest:@"http://localhost:2468/testpost" data:contactInfoDict];
 }
+
+- (IBAction)setNumber:(id)sender {
+    NSLog(_ownPhoneField.text);
+    
+}
+
+- (IBAction)sendPost:(id)sender {
+}
+
+- (void)postRequest:(NSString *)url data:(NSMutableDictionary *)inputData {
+    NSError*error;
+    //convert object to data
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:inputData options:kNilOptions error:&error];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
+    
+    [request setHTTPBody:jsonData];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"Post request for");
+    NSLog([inputData objectForKey:@"firstName"]);
+}
+
+-(NSDictionary *)getRequest:(NSString *)url {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    
+    NSURLResponse *response;
+    NSData *GETReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSString *theReply = [[NSString alloc] initWithBytes:[GETReply bytes] length:[GETReply length] encoding: NSASCIIStringEncoding];
+    NSLog(@"Reply: %@", theReply);
+
+    NSError* error;
+    NSDictionary* json = [NSJSONSerialization
+                          JSONObjectWithData:GETReply
+                          
+                          options:kNilOptions
+                          error:&error];
+    return json;
+}
+//
+-(void)populateNumbers {
+    NSString * key = @"248-880-0325";
+    NSDictionary * results = [self getRequest:@"https://enough-ios-test.firebaseio.com/users.json"];
+    NSDictionary * results_iter = [results objectForKey:key];
+    addedNumbers = [[NSMutableArray alloc]init];
+    for(NSString *key in [results_iter allKeys]) {
+        NSLog([[results_iter objectForKey:key] objectForKey:@"member"]);
+        [addedNumbers addObject:[[results_iter objectForKey:key] objectForKey:@"member"]];
+    }
+//    NSLog([addedNumbers description]);
+    [tableView reloadData];
+}
+
+// Table
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	// Return the number of time zone names.
+	return [addedNumbers count];
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"thisCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.textLabel.text = [addedNumbers objectAtIndex:indexPath.row];
+    
+	return cell;
+}
+
 
 #pragma mark - Address Book
 
 -(void)showAddressBook{
-     NSLog(@"asdf");
     _addressBookController = [[ABPeoplePickerNavigationController alloc] init];
     [_addressBookController setPeoplePickerDelegate:self];
     [self presentViewController:_addressBookController animated:YES completion:nil];
@@ -119,25 +207,11 @@
     }
     // Add the dictionary to the array.
     [_arrContactsData addObject:contactInfoDict];
-    
-    NSError*error;
-    //convert object to data
-    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:contactInfoDict options:kNilOptions error:&error];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"http://localhost:3000/in"]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
-    
-    [request setHTTPBody:jsonData];
-    
-    NSLog([contactInfoDict objectForKey:@"firstName"]);
-    
+   
+    [self postRequest:@"http://localhost:2468/testpost" data:contactInfoDict];
+    [self getRequest:@"http://localhost:2468/testget?v=a"];
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
 
-    
     return NO;
 }
 -(BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier{
