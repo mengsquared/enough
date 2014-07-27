@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import <Firebase/Firebase.h>
 
 @interface ViewController ()
 
@@ -37,33 +38,6 @@
     addedNumbers = 1 + 2;
     NSLog(@"The Sum of 1 + 2 is %d",addedNumbers);
     [self showAddressBook];
-}
-
-#pragma mark - Table View
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (_arrContactsData) {
-        return _arrContactsData.count;
-    }
-    else{
-        return 0;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    NSDictionary *contactInfoDict = [_arrContactsData objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]];
-    
-    return cell;
 }
 
 #pragma mark - Address Book
@@ -145,11 +119,22 @@
     }
     // Add the dictionary to the array.
     [_arrContactsData addObject:contactInfoDict];
-    NSLog([contactInfoDict objectForKey:@"firstName"]);
-    // Reload the table view data.
-//    [self.tableView reloadData];
     
-    // Dismiss the address book view controller.
+    NSError*error;
+    //convert object to data
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:contactInfoDict options:kNilOptions error:&error];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://localhost:3000/in"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
+    
+    [request setHTTPBody:jsonData];
+    
+    NSLog([contactInfoDict objectForKey:@"firstName"]);
+    
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
 
     

@@ -390,6 +390,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Enough/Enough-Prefix.pch";
 				INFOPLIST_FILE = "Enough/Enough-Info.plist";
@@ -403,6 +407,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Enough/Enough-Prefix.pch";
 				INFOPLIST_FILE = "Enough/Enough-Info.plist";
@@ -470,6 +478,7 @@
 				4D70A5501984CF4F001A6ACB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D70A5511984CF4F001A6ACB /* Build configuration list for PBXNativeTarget "EnoughTests" */ = {
 			isa = XCConfigurationList;
@@ -478,6 +487,7 @@
 				4D70A5531984CF4F001A6ACB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
