@@ -7,6 +7,7 @@
     "express": "3.x",
     "jade": "*",
     "firebase":"*",
-    "twilio":"*"
+    "twilio":"*",
+    "xml2js":"*"
   }
 }
