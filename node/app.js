@@ -11,6 +11,7 @@ app.get('/', routes.layout);
 app.get('/add_new_number', routes.addNewNum);
 app.get('/sendmsg', routes.sendmsg);
 app.post('/insert', routes.insert);
+app.post('/add_phone', routes.add_phone);
 //app.get('/twilio', routes.twilio);
 
 app.post('/testpost', routes.testpost);

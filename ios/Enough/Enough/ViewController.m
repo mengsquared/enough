@@ -29,12 +29,15 @@
 	// Do any additional setup after loading the view, typically from a nib.
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [self.view addGestureRecognizer:singleTap];
-    [self populateNumbers];
-    UIColor *color = [UIColor colorWithRed:(243/255.0) green:(123/255.0) blue:(48/255.0) alpha:1];
+    NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"ENOUGH_PHONE_NUMBER"];
+    [self populateNumbers:savedValue];
+    UIColor *color = [UIColor colorWithRed:(200/255.0) green:(200/255.0) blue:(200/255.0) alpha:1];
     NSString * placeholderText = @"Your Phone Number";
     _ownPhoneField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholderText attributes:@{NSForegroundColorAttributeName: color}];
     placeholderText = @"Post Key";
     _sendPostField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholderText attributes:@{NSForegroundColorAttributeName: color}];
+    if ([savedValue length] != 0) _ownPhoneField.text = savedValue;
 }
 -(void)handleSingleTap:(UITapGestureRecognizer *)sender{
     [_ownPhoneField resignFirstResponder];
@@ -49,13 +52,20 @@
 
 - (IBAction)addContact:(id)sender {
     [self showAddressBook];
-    [self postRequest:@"http://localhost:2468/testpost" data:contactInfoDict];
+//    [self postRequest:@"http://localhost:2468/testpost" data:contactInfoDict];
 }
 
 - (IBAction)setNumber:(id)sender {
-    NSLog(_ownPhoneField.text);
-    
+    NSString* phoneNumber = _ownPhoneField.text;
+    NSMutableDictionary *dataDict = [[NSMutableDictionary alloc]
+                                            initWithObjects:@[@""]
+                                            forKeys:@[@"phoneNumber"]];
+    [dataDict setObject:phoneNumber forKey:@"phoneNumber"];
+    [self postRequest:@"http://localhost:2468/add_phone" data:dataDict];
+    [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:@"ENOUGH_PHONE_NUMBER"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
 
 - (IBAction)sendPost:(id)sender {
 }
@@ -76,6 +86,10 @@
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSLog(@"Post request for");
     NSLog([inputData objectForKey:@"firstName"]);
+    NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"ENOUGH_PHONE_NUMBER"];
+    [self populateNumbers:savedValue];
+    [tableView reloadData];
 }
 
 -(NSDictionary *)getRequest:(NSString *)url {
@@ -98,8 +112,8 @@
     return json;
 }
 //
--(void)populateNumbers {
-    NSString * key = @"248-880-0325";
+-(void)populateNumbers:(NSString *)savedNumber {
+    NSString * key = savedNumber;
     NSDictionary * results = [self getRequest:@"https://enough-ios-test.firebaseio.com/users.json"];
     NSDictionary * results_iter = [results objectForKey:key];
     addedNumbers = [[NSMutableArray alloc]init];
@@ -200,16 +214,17 @@
         CFRelease(currentEmailValue);
     }
     CFRelease(emailsRef);
-    
     // Initialize the array if it's not yet initialized.
     if (_arrContactsData == nil) {
         _arrContactsData = [[NSMutableArray alloc] init];
     }
     // Add the dictionary to the array.
     [_arrContactsData addObject:contactInfoDict];
-   
-    [self postRequest:@"http://localhost:2468/testpost" data:contactInfoDict];
-    [self getRequest:@"http://localhost:2468/testget?v=a"];
+    NSString *pilotPhoneNumber = [[NSUserDefaults standardUserDefaults]
+                            stringForKey:@"ENOUGH_PHONE_NUMBER"];
+    [contactInfoDict setObject:pilotPhoneNumber forKey:@"pilotPhoneNumber"];
+    NSLog([contactInfoDict description]);
+    [self postRequest:@"http://localhost:2468/insert" data:contactInfoDict];
     [_addressBookController dismissViewControllerAnimated:YES completion:nil];
 
     return NO;

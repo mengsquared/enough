@@ -1,7 +1,7 @@
 var Firebase = require('firebase');
 
 exports.getDBUrl = function() {
-  db = "https://justenough.firebaseio.com/";
+  db = "https://enough-ios-test.firebaseio.com/";
   return db;
 }
 
