@@ -8,6 +8,8 @@
     "jade": "*",
     "firebase":"*",
     "twilio":"*",
-    "xml2js":"*"
+    "xml2js":"*",
+    "stylus": "*",
+    "nib": "*"
   }
 }

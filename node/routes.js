@@ -1,7 +1,17 @@
 var db_methods = require('./db_methods.js');
 
-exports.layout = function(req,res){
-	res.send('home page');
+exports.article = function(req,res){
+	res.render('article', {
+    postID: req.params['postID'],
+    title: 'Some article about Lorem Ipsum Dolor...',
+    description: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at lectus consequat, venenatis sem vitae, vulputate urna. Nullam sit amet lectus diam. Integer convallis odio id orci bibendum, ut semper dui molestie. Donec ultrices ligula leo, a condimentum urna feugiat eu. Nam pharetra odio eget elit porta, quis scelerisque augue ultrices. Maecenas ullamcorper sed tellus iaculis convallis. Etiam vitae venenatis purus, eget gravida enim. Ut dui arcu, accumsan eu semper porttitor, fringilla ut lectus. Nulla ullamcorper consequat aliquet. Aliquam sollicitudin arcu ac felis dictum semper. Aliquam non magna in mi molestie dapibus vitae vitae quam. Aenean ac diam non elit eleifend consequat ut ac ante. Sed et ullamcorper urna, ut scelerisque nibh. Nunc tempus, urna hendrerit lobortis sagittis, lacus odio vulputate velit, at porttitor turpis massa id nunc.</p><p>Nunc egestas ante eget nisi ultrices luctus a pellentesque purus. Fusce sit amet urna sit amet enim viverra vehicula. Cras erat nisi, convallis sed pharetra luctus, porta vel purus. Quisque quis lacus eu tortor laoreet imperdiet. Mauris suscipit ante sit amet urna sagittis consequat. Suspendisse bibendum elit in iaculis ultrices. Etiam eu lobortis mi. Proin sed eros enim. Cras mollis semper neque id molestie. Nulla ac dignissim est. Suspendisse potenti. Praesent non neque luctus, gravida eros quis, eleifend magna. Donec sit amet molestie risus. Curabitur venenatis bibendum nunc vel tempus.</p>'
+  })
+}
+
+exports.articles = function(req, res){
+  res.render('articles', {
+    title: 'Articles'
+  })
 }
 
 var mailer = function(user_obj){ 
