@@ -4,12 +4,17 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "chance": "^0.5.9",
     "express": "3.x",
+    "firebase": "*",
+    "htmlparser": "^1.7.7",
     "jade": "*",
-    "firebase":"*",
-    "twilio":"*",
-    "xml2js":"*",
+    "mailjet": "0.0.1",
+    "mailjet-sendemail": "^1.0.0",
+    "nib": "*",
     "stylus": "*",
-    "nib": "*"
+    "twilio": "*",
+    "unirest": "^0.2.7",
+    "xml2js": "*"
   }
 }

@@ -1,13 +1,6 @@
 extend layout
 block content
   div(id='main' role='main' class='cf')
-    p
-      a(href='#') link
-    p
-      a(href='#') link
-    p
-      a(href='#') link
-    p
-      a(href='#') link
-    p
-      a(href='#') link
+  each article in articles
+      p
+        a(href='/a/#{Object.keys(articles)[0]}')= article['title']
