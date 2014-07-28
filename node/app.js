@@ -30,7 +30,8 @@ app.get('/a/', routes.articles);
 app.post('/sendmsg', routes.sendmsg);
 app.post('/insert', routes.insert);
 app.post('/add_phone', routes.add_phone);
-//app.get('/twilio', routes.twilio);
+// app.get('/twilio', routes.twilio);
+app.post('/in/twil', routes.in_twil);
 
 app.post('/testpost', routes.testpost);
 app.get('/testget', routes.testget);

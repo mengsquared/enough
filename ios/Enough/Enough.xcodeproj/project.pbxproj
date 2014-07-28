@@ -27,6 +27,7 @@
 		4D70A5411984CF4F001A6ACB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D70A5201984CF4F001A6ACB /* UIKit.framework */; };
 		4D70A5491984CF4F001A6ACB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D70A5471984CF4F001A6ACB /* InfoPlist.strings */; };
 		4D70A54B1984CF4F001A6ACB /* EnoughTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D70A54A1984CF4F001A6ACB /* EnoughTests.m */; };
+		4DABB85C1985D4A600F224C8 /* update.png in Resources */ = {isa = PBXBuildFile; fileRef = 4DABB85B1985D4A600F224C8 /* update.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		4D70A5461984CF4F001A6ACB /* EnoughTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EnoughTests-Info.plist"; sourceTree = "<group>"; };
 		4D70A5481984CF4F001A6ACB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4D70A54A1984CF4F001A6ACB /* EnoughTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnoughTests.m; sourceTree = "<group>"; };
+		4DABB85B1985D4A600F224C8 /* update.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				4D70A5341984CF4F001A6ACB /* ViewController.h */,
 				4D70A5351984CF4F001A6ACB /* ViewController.m */,
 				4D70A5371984CF4F001A6ACB /* Images.xcassets */,
+				4DABB85B1985D4A600F224C8 /* update.png */,
 				4D092450198525BE006C2721 /* logo.png */,
 				4D09245219852864006C2721 /* box.png */,
 				4D09245319852864006C2721 /* outreach.png */,
@@ -250,6 +253,7 @@
 				4D70A5331984CF4F001A6ACB /* Main_iPad.storyboard in Resources */,
 				4D09245719852864006C2721 /* outreach.png in Resources */,
 				4D092451198525BE006C2721 /* logo.png in Resources */,
+				4DABB85C1985D4A600F224C8 /* update.png in Resources */,
 				4D70A5381984CF4F001A6ACB /* Images.xcassets in Resources */,
 				4D09245619852864006C2721 /* box.png in Resources */,
 				4D09245819852864006C2721 /* send.png in Resources */,

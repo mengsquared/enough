@@ -30,6 +30,7 @@ exports.articles = function(req, res){
 }
 
 var mailer = function(user_obj, post){
+  var client = require('twilio')('AC49a0f05f5017e622beda1144f99559f0', '9891f1ca7a89539e1f62966bcf7bc8e9');
   var articles_ref = db_root.child("articles").child(post);
   var post_data = {};
   articles_ref.on('value', function (snapshot) {
@@ -40,6 +41,16 @@ var mailer = function(user_obj, post){
       if (user_obj['number'] != ''){
         console.log(user_obj['number']);
         console.log("SEND TWILIO");
+        client.sendSms({
+          to: '+1'+user_obj['number'],
+          from: '+15186335464',
+          body: post_data['title'].substr(0,30) + "-via Enough Project"
+            + ' http://51eb0b2a.ngrok.com/a/' + post
+        }, function(err, responseData){
+          if(!err) {
+            console.log(responseData.body);
+          }
+        });
       }
       else if (user_obj['email'] != '') {
         console.log(user_obj['email']);
@@ -54,11 +65,20 @@ var mailer = function(user_obj, post){
 
 var e_mailer = function(dest, post) {
   var title = encodeURI(post['title']);
-  console.log(title);
+  title = title.replace(/%20/g, " ");
+  title = decodeURI(title);
+
+  var desc = encodeURI(post['desc']);
+  desc = desc.replace(/%20/g, " ");
+  desc = desc.replace("<p>",'');
+  desc = desc.replace("</p>",'');
+  desc = desc.replace("<em>",'');
+  desc = desc.replace("</em>",'');
+  desc = decodeURI(desc);
+
   var desc = post['description'];
   mailjet.sendText('me@raymondjacobson.com',
-    dest, '"Enough Project: '+title.substr(0,30) +'..."', '"'+title +'\n'+'Read the whole story:\n'+post['link']+'"');
-  // mailjet.sendText('me@raymondjacobson.com', 'jacobr2@rpi.edu', 'hi test', 'lol test');
+    dest, '"Enough Project: '+title.substr(0,40) +'..."', '"'+title+'"'+'\n\n'+'Read the whole story:\n'+post['link']);
 }
 
 exports.sendmsg = function(req,res){
@@ -111,3 +131,29 @@ exports.testget = function(req, res){
   console.log(req.query);
   res.send('/ GET OK');
 }
+
+exports.in_twil = function(req, res){
+  var client = require('twilio')('AC49a0f05f5017e622beda1144f99559f0', '9891f1ca7a89539e1f62966bcf7bc8e9');
+  var incoming_number = req.body.From.replace('+1','');
+  console.log(incoming_number);
+  var userRef = db_root.child("users").child(incoming_number);
+  userRef.push({
+    member: 'Myself',
+    number: incoming_number,
+  });
+  var articlesRef = db_root.child("articles");
+  articlesRef.once('value', function(snapshot){
+    var rando = Object.keys(snapshot.val())[0];
+    client.sendSms({
+      to: '+1'+incoming_number,
+      from: '+15186335464',
+      body: snapshot.val()[rando]['title'].substr(0,30) + "-via Enough Project"
+        + ' http://51eb0b2a.ngrok.com/a/' + rando
+    }, function(err, responseData){
+      if(!err) {
+        console.log(responseData.body);
+      }
+    });
+  });
+}
+
