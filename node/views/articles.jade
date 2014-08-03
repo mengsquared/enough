@@ -1,0 +1,6 @@
+extend layout
+block content
+  div(id='main' role='main' class='cf')
+  each article, index in Object.keys(articles)
+      p
+        a(href='/a/#{article}')= articles[article]['title']

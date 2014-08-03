@@ -1,0 +1,30 @@
+BG = #FCFCFC
+ORANGE = rgba(243, 123, 48, 0.95)
+
+HEADER_HEIGHT = 50px
+HEADER_TOP_PAD = 10px
+
+header
+  padding-top HEADER_TOP_PAD
+  position fixed
+  margin 0 auto
+  text-align center
+  background darken(BG, 5%)
+  top 0
+  width 100%
+  height HEADER_HEIGHT
+  opacity 0.95
+  border-bottom 1px solid darken(BG, 30%)
+
+html, body
+  font-family 'PT Serif', Serif
+  background BG
+
+#container
+  margin-top HEADER_HEIGHT + HEADER_TOP_PAD
+
+h1
+  font-size 3em
+
+p
+  font-size 1.2em
